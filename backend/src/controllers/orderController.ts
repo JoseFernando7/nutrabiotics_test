@@ -1,29 +1,37 @@
 import { Request, Response } from 'express'
 import * as orderService from '../services/orderService'
 import { CreateOrderDTO } from '../dtos/order/createrOrderDto'
+import { AuthRequest } from '../requests/authRequest'
 
 export const createOrder = async (request: Request, response: Response): Promise<void> => {
+  const { user } = request as AuthRequest
+  const orderData: CreateOrderDTO = request.body
+
   try {
-    const orderData: CreateOrderDTO = request.body
-    const order = await orderService.createOrder(orderData)
-    response.status(201).json(order)
+    const newOrder = await orderService.createOrder(orderData, user)
+    response.status(201).json(newOrder)
   } catch (error) {
+    if (error instanceof Error && error.message === 'FORBIDDEN_ROLE') {
+      response.status(403).json({ messageError: 'Solo los clientes pueden crear órdenes' })
+      return
+    }
     console.error('Error creating order:', error)
     response.status(500).json({ messageError: 'Error creating the order' })
   }
 }
 
-export const getOrderById = async (request: Request, response: Response): Promise<void> => {
+export const getOrders = async (request: Request, response: Response): Promise<void> => {
   try {
-    const orderId = request.params.id
-    const order = await orderService.getOrderById(orderId)
-    if (order === null) {
-      response.status(404).json({ messageError: 'Order not found' })
-      return
-    }
-    response.status(200).json(order)
+    const { user } = request as AuthRequest
+
+    const orders = await orderService.getOrdersService({
+      userId: user.userId,
+      username: '',
+      role: user.role
+    })
+
+    response.status(200).json(orders)
   } catch (error) {
-    console.error('Error fetching order:', error)
-    response.status(500).json({ messageError: 'Error fetching the order' })
+    response.status(500).json({ messageError: 'Error al obtener las órdenes' })
   }
 }

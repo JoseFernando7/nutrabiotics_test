@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { createOrder, getOrderById } from '../controllers/orderController'
+import { createOrder, getOrders } from '../controllers/orderController'
 
 const router = Router()
 
@@ -51,27 +51,18 @@ router.post('/', createOrder)
 
 /**
  * @swagger
- * /orders/{id}:
+ * /orders:
  *  get:
- *    summary: Obtener una orden por ID
- *    description: Obtiene los detalles de una orden específica utilizando su ID
+ *    summary: Listar órdenes
+ *    description: Obtiene una lista de órdenes, si es llamada por un admin, obtiene todas las órdenes, si es llamada por un cliente, obtiene solo sus órdenes
  *    tags: [Orders]
- *    parameters:
- *      - in: path
- *        name: id
- *        required: true
- *        description: ID de la orden a obtener
- *        schema:
- *          type: string
  *
  *    responses:
  *      200:
- *        description: Detalles de la orden obtenidos exitosamente
- *      404:
- *        description: Orden no encontrada
+ *        description: Órdenes obtenidas exitosamente
  *      500:
  *        description: Error interno del servidor
  */
-router.get('/:id', getOrderById)
+router.get('/', getOrders)
 
 export default router

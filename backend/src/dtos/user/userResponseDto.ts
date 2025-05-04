@@ -1,4 +1,5 @@
 export interface UserResponseDTO {
   userId: string
-  username: string
+  username?: string
+  role: 'admin' | 'cliente'
 }

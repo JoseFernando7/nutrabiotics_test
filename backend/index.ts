@@ -1,21 +1,23 @@
 import express, { Request, Response } from 'express'
 
-import userRoutes from './src/routes/userRoutes'
 import orderRoutes from './src/routes/orderRoutes'
 import productRoutes from './src/routes/productRoutes'
+import authRoutes from './src/routes/authRoutes'
 
 import { swaggerDocsSetup } from './swagger'
-import { config } from './src/config/env'
+import { envConfig } from './src/config/env'
 import { connectDB } from './src/config/db'
+import { authMiddleware } from './src/middlewares/authMiddleware'
 
 const app = express()
 
-const PORT = config.PORT ?? 3000
+const PORT = envConfig.PORT ?? 3000
 
 app.use(express.json())
-app.use('/', userRoutes)
-app.use('/orders', orderRoutes)
-app.use('/products', productRoutes)
+
+app.use('/orders', authMiddleware as express.RequestHandler, orderRoutes)
+app.use('/products', authMiddleware as express.RequestHandler, productRoutes)
+app.use('/auth', authRoutes)
 
 swaggerDocsSetup(app)
 

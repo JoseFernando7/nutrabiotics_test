@@ -10,6 +10,21 @@ const swaggerOptions: swaggerJsDoc.Options = {
       version: '1.0.0',
       description: 'Documentación generada automáticamente con Swagger para la API'
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          description: 'JWT Authorization header using the Bearer scheme. Example: "Authorization: Bearer {token}"'
+        }
+      }
+    },
+    security: [
+      {
+        bearerAuth: []
+      }
+    ],
     servers: [
       {
         url: 'http://localhost:3000'

@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { createUser } from '../controllers/userController'
+// import { createUser } from '../controllers/userController'
 
 const router = Router()
 
@@ -33,18 +33,6 @@ const router = Router()
  *         description: Error interno del servidor
  */
 
-router.post('/users', createUser)
-
-/**
- * @openapi
- * /api/users:
- *  get:
- *    summary: Lista todos los usuarios
- *    description: Devuelve una lista de todos los usuarios disponibles en la base de datos
- *    responses:
- *      200:
- *        description: Lista de usuarios
- */
-// router.get('/users', getUser)
+// router.post('/users', createUser)
 
 export default router

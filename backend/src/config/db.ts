@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
-import { config } from './env'
+import { envConfig } from './env'
 
 export const connectDB = async (): Promise<void> => {
   try {
-    await mongoose.connect(config.MONGODB_URI)
+    await mongoose.connect(envConfig.MONGODB_URI)
     console.log('MongoDB connected')
   } catch (error) {
     console.error('MongoDB connection error:', error)

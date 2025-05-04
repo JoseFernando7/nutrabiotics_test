@@ -1,8 +1,15 @@
 import { Order } from '../models/order'
 import { CreateOrderDTO } from '../dtos/order/createrOrderDto'
 import { OrderResponseDTO } from '../dtos/order/orderResponseDto'
+import { UserResponseDTO } from '../dtos/user/userResponseDto'
+import { Types } from 'mongoose'
 
-export const createOrder = async (orderData: CreateOrderDTO): Promise<OrderResponseDTO> => {
+export const createOrder = async (orderData: CreateOrderDTO, user: UserResponseDTO): Promise<OrderResponseDTO> => {
+  // Check if the user is client
+  if (user.role !== 'cliente') {
+    throw new Error('FORBIDDEN_ROLE')
+  }
+
   const total = orderData.items.reduce((sum, item) => sum + item.quantity * item.price, 0)
 
   const order = new Order({
@@ -29,13 +36,20 @@ export const createOrder = async (orderData: CreateOrderDTO): Promise<OrderRespo
   })
 }
 
-export const getOrderById = async (orderId: string): Promise<OrderResponseDTO | null> => {
-  const order = await Order.findById(orderId)
-  if (order === null) {
-    return null
+export const getOrdersService = async (userResponseDto: UserResponseDTO): Promise<OrderResponseDTO[] | null> => {
+  let orders
+
+  // Check if the user is an admin
+  // If the user is an admin, fetch all orders
+  // If the user is not an admin, fetch only their orders
+  if (userResponseDto.role === 'admin') {
+    orders = await Order.find()
+  } else {
+    orders = await Order.find({ userId: new Types.ObjectId(userResponseDto.userId) })
   }
 
-  return ({
+  // Converts the mongoDb documents into OrderResponseDTO's
+  return orders.map(order => ({
     orderId: order._id.toString(),
     userId: order.userId.toString(),
     items: order.items.map(item => ({
@@ -47,5 +61,5 @@ export const getOrderById = async (orderId: string): Promise<OrderResponseDTO | 
     total: order.total,
     status: order.status,
     createdAt: order.createdAt
-  })
+  }))
 }

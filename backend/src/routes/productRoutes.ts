@@ -1,6 +1,7 @@
 import { Router } from 'express'
 
 import { createProduct, deleteProduct, getAllProducts, getProductById, updateProduct } from '../controllers/productController'
+import { isAdminMiddleware } from '../middlewares/adminMiddleware'
 
 const router = Router()
 
@@ -32,7 +33,7 @@ const router = Router()
  *       500:
  *         description: Error interno del servidor
  */
-router.post('/', createProduct)
+router.post('/', isAdminMiddleware, createProduct)
 
 /**
  * @swagger
@@ -40,10 +41,14 @@ router.post('/', createProduct)
  *   get:
  *     summary: Obtener todos los productos
  *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
  *
  *     responses:
  *       200:
  *         description: Lista de productos
+ *       401:
+ *         description: Usuario no autenticado
  *       500:
  *         description: Error interno del servidor
  */
@@ -104,7 +109,7 @@ router.get('/:id', getProductById)
  *       500:
  *         description: Error interno del servidor
  */
-router.put('/:id', updateProduct)
+router.put('/:id', isAdminMiddleware, updateProduct)
 
 /**
  * @swagger
@@ -126,6 +131,6 @@ router.put('/:id', updateProduct)
  *       500:
  *         description: Error interno del servidor
  */
-router.delete('/:id', deleteProduct)
+router.delete('/:id', isAdminMiddleware, deleteProduct)
 
 export default router
