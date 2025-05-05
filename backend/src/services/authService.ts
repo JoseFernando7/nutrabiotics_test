@@ -21,7 +21,7 @@ export const loginService = async (username: string, password: string): Promise<
   return { token, user: { userId: user._id.toString(), username: user.username, role: user.role } }
 }
 
-export const registerService = async (createUserDTO: CreateUserDTO): Promise<{ token: string, user: UserResponseDTO }> => {
+export const registerService = async (createUserDTO: CreateUserDTO): Promise<{ message: string }> => {
   // Verify if the user already exists
   const existingUser = await User.findOne({ username: createUserDTO.username })
   if (existingUser !== null) throw new Error('USER_ALREADY_EXISTS')
@@ -38,14 +38,16 @@ export const registerService = async (createUserDTO: CreateUserDTO): Promise<{ t
 
   await newUser.save()
 
-  // Generate a token for the new user
-  const token = generateToken({ userId: newUser._id, role: newUser.role })
+  // // Generate a token for the new user
+  // const token = generateToken({ userId: newUser._id, role: newUser.role })
 
-  const user: UserResponseDTO = {
-    userId: newUser._id.toString(),
-    username: newUser.username,
-    role: newUser.role
-  }
+  // const user: UserResponseDTO = {
+  //   userId: newUser._id.toString(),
+  //   username: newUser.username,
+  //   role: newUser.role
+  // }
 
-  return { token, user }
+  const message = 'Usuario creado correctamente'
+
+  return { message }
 }

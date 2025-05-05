@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express'
+import cors from 'cors'
 
 import orderRoutes from './src/routes/orderRoutes'
 import productRoutes from './src/routes/productRoutes'
@@ -14,6 +15,7 @@ const app = express()
 const PORT = envConfig.PORT ?? 3000
 
 app.use(express.json())
+app.use(cors())
 
 app.use('/orders', authMiddleware as express.RequestHandler, orderRoutes)
 app.use('/products', authMiddleware as express.RequestHandler, productRoutes)
