@@ -15,64 +15,37 @@ Aplicación web que permite a los usuarios registrarse, iniciar sesión, visuali
 
 ---
 
+## 🔧 Requisitos
+
+- npm
+- node
+- Docker
+- Docker Compose
+
 ## 👤 Roles de usuario
 
 - **Admin:** Puede crear productos y ver todas las órdenes disponibles
 - **Cliente:** Puede ver productos, agregarlos al carrito y realizar órdenes
 
-## 🚀 Instalación
-
-### 📦 Backend
-
-1. Ve al directorio del backend:
-
-```bash
-cd backend
-```
-
-2. Instala las dependencias
-
-```bash
-npm install
-```
-
-3. Crear un archivo `.env` en la raíz del backend con la siguiente información
-
-```bash
-PORT
-MONGODB_URI
-JWT_SECRET
-JWT_EXPIRATION
-```
-
-4. Ejecuta el servidor
-
-```bash
-npm run start
-```
-
-**El backend correrá por defecto en `http://localhost:3000`**
-
 ---
 
-### 💻 Frontend
+## 🚀 Instalación
 
-1. Ve al directorio del frontend
-
-```bash
-cd frontend
-```
-
-2. Instala las dependencias
+1. Clonar el repositorio
 
 ```bash
-npm install
+git clone https://github.com/JoseFernando7/nutrabiotics_test.git
+cd nutrabiotics_test
 ```
 
-3. Ejecuta la aplicación
+2. Ejecutar el proyecto con Docker Compose
 
 ```bash
-npm run dev
+docker compose up --build
 ```
 
-**El frontend correrá por defecto en `http://localhost:5173`**
+¡Eso es todo! 🎉 Los servicios se levantarán automáticamente:
+
+- **Frontend (React): `http://localhost:5173`**
+
+- **Backend (Express API): `http://localhost:3000`**

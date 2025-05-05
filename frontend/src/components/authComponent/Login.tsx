@@ -67,6 +67,11 @@ export default function Login() {
         />
         <button type='submit'> Entrar </button>
       </form>
+
+      <div>
+        <h3> ¿No tienes una cuenta? </h3>
+        <button onClick={() => navigate('/signup')}> Regístrate aquí </button>
+      </div>
     </div>
   )
 }
