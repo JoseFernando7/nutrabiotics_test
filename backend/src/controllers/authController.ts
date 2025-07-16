@@ -1,13 +1,22 @@
+import bcrypt from 'bcryptjs'
 import { Request, Response } from 'express'
 
+import { generateToken } from '../utils/jwt'
+import { User, UserDocument } from '../models/user'
 import { CreateUserDTO } from '../dtos/user/createUserDto'
-import { loginService, registerService } from '../services/authService'
+import { loginService, registerService, LoginDeps } from '../services/auth/authService'
 
 export const login = async (request: Request, response: Response): Promise<void> => {
   const { username, password } = request.body
 
+  const deps: LoginDeps = {
+    findUserByUsername: async (username: string): Promise<UserDocument | null> => User.findOne({ username }),
+    comparePassword: bcrypt.compare,
+    generateToken
+  }
+
   try {
-    const tokenResult = await loginService(username, password)
+    const tokenResult = await loginService(username, password, deps)
     response.status(200).json(tokenResult)
   } catch (error) {
     if (error instanceof Error) {
