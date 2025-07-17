@@ -1,10 +1,11 @@
 import bcrypt from 'bcryptjs'
 import { Request, Response } from 'express'
 
-import { generateToken } from '../utils/jwt'
-import { User, UserDocument } from '../models/user'
-import { CreateUserDTO } from '../dtos/user/createUserDto'
-import { loginService, registerService, LoginDeps } from '../services/auth/authService'
+import { generateToken } from '../../shared/utils/jwt'
+import { User, UserDocument } from '../../user/models/user'
+import { CreateUserDTO } from '../../user/dtos/createUserDto'
+import { loginService, registerService, LoginDeps } from '../services/authService'
+import { registerDeps } from '../services/registerDeps'
 
 export const login = async (request: Request, response: Response): Promise<void> => {
   const { username, password } = request.body
@@ -32,7 +33,7 @@ export const signup = async (request: Request, response: Response): Promise<void
   const createUserDTO: CreateUserDTO = request.body
 
   try {
-    const tokenResult = await registerService(createUserDTO)
+    const tokenResult = await registerService(createUserDTO, registerDeps)
     response.status(201).json(tokenResult)
   } catch (error) {
     if (error instanceof Error && error.message === 'USER_ALREADY_EXISTS') {

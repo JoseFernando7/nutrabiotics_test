@@ -1,14 +1,14 @@
 import express, { Request, Response } from 'express'
 import cors from 'cors'
 
-import orderRoutes from './src/routes/orderRoutes'
-import productRoutes from './src/routes/productRoutes'
-import authRoutes from './src/routes/authRoutes'
+import orderRoutes from './src/order/routes/orderRoutes'
+import productRoutes from './src/product/routes/productRoutes'
+import authRoutes from './src/auth/routes/authRoutes'
 
 import { swaggerDocsSetup } from './swagger'
 import { envConfig } from './src/config/env'
 import { connectDB } from './src/config/db'
-import { authMiddleware } from './src/middlewares/authMiddleware'
+import { authMiddleware } from './src/auth/middlewares/authMiddleware'
 
 const app = express()
 

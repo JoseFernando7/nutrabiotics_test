@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 
-import { AuthRequest } from '../requests/authRequest'
+import { AuthRequest } from '../shared/requests/authRequest'
 
 export const isAdminMiddleware = (request: Request, response: Response, next: NextFunction): void => {
   const user = (request as AuthRequest).user

@@ -1,4 +1,4 @@
-import { UserDocument } from "../../models/user";
+import { UserDocument } from "../../user/models/user";
 
 export const findExistingUser = async (username: string, findExistingUserFn: (username: string) => Promise<UserDocument | null>): Promise<void> => {
   const user = await findExistingUserFn(username);
