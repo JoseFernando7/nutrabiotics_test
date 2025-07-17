@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { RegisterRequest, RegisterResponse } from '../../models/Auth';
+import { RegisterRequest } from '../models/Auth';
+import { registerService } from '../services/signupService';
 
 export default function Signup() {
   const [username, setUsername] = useState('');
@@ -10,27 +11,14 @@ export default function Signup() {
 
   const handleSignup = async (e: React.FormEvent, registerRequest: RegisterRequest, navigate: ReturnType<typeof useNavigate>): Promise<void> => {
     e.preventDefault();
-
+    
     try {
-      const response = await fetch('http://localhost:3000/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(registerRequest),
-      });
-
-      if (!response.ok) {
-        const errorData: { message: string } = await response.json();
-        throw new Error(errorData.message || 'Error en el registro');
-      }
-
-      const data: RegisterResponse = await response.json();
-      alert(data.message || 'Registro exitoso. Ahora puedes iniciar sesión.');
-      navigate('/');
+      const data = await registerService(registerRequest);
+      alert(data.message || 'Registro exitoso. Ahora puede iniciar sesión.');
+      navigate('/'); // Redirect to login or home page after successful signup
     } catch (error) {
       console.error('Signup error:', error);
-      alert('Error al registrarse. Inténtalo de nuevo.');
+      alert("Error al registrarse. Por favor, inténtelo de nuevo.");
     }
   };
 

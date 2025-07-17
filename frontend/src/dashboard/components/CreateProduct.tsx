@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { createProduct } from '../services/CreateProductService'
 
 const CreateProduct: React.FC = () => {
   const [name, setName] = useState('')
@@ -10,27 +11,15 @@ const CreateProduct: React.FC = () => {
   const handleCreateProduct = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    const token = localStorage.getItem('token')
-
-    const response = await fetch('http://localhost:3000/products', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ name, price }),
-    })
-
-    if (response.ok) {
-      const data = await response.json()
-      console.log('Producto creado:', data)
-      
-      alert('Producto creado con éxito')
+    try {
+      const data = await createProduct({ name, price })
+      alert(`Producto creado: ${data.name} con precio ${data.price}`)
       setName('')
       setPrice(0)
-    } else {
-      alert('Error al crear el producto')
-      console.error('Error al crear el producto')
+      navigate('/dashboard')
+    } catch (error) {
+      console.error('Error al crear el producto:', error)
+      alert('Error al crear el producto. Por favor, inténtalo de nuevo.')
     }
   }
 

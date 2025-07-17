@@ -1,9 +1,11 @@
 import ProductCard from './ProductCard'
-import { Product } from '../../models/Product'
-import { useCart } from '../../contexts/CarContext'
+import { Product } from '../../shared/models/Product'
+import { useCart } from '../../shared/hooks/UseCart'
 import { useNavigate } from 'react-router-dom'
 
 import { ReactNode, useEffect, useState } from 'react'
+import { getAllProducts } from '../../shared/Services/GetProducts'
+import { addProductToCart } from '../services/CartService'
 
 const Home: React.FC = (): ReactNode | Promise<ReactNode> => {
   const { addToCart } = useCart()
@@ -13,26 +15,24 @@ const Home: React.FC = (): ReactNode | Promise<ReactNode> => {
   const navigate = useNavigate()
   
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    fetch('http://localhost:3000/products', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setProducts(data)
-      })
-  }, [])
+        getAllProducts()
+          .then((setProducts))
+          .catch((error) => {
+              console.error('Error fetching products:', error)
+              alert('Error al obtener los productos')
+            })
+      }, [])
+
+  // const handleOrder = (productId: string) => {
+  //   const productToOrder = products.find((product) => product.productId === productId)
+  //   if (productToOrder) {
+  //     addToCart(productToOrder)
+  //     console.log(`Product ordered: ${productToOrder.name}`)
+  //   }
+  // }
 
   const handleOrder = (productId: string) => {
-    const productToOrder = products.find((product) => product.productId === productId)
-    if (productToOrder) {
-      addToCart(productToOrder)
-      console.log(`Product ordered: ${productToOrder.name}`)
-    }
+    addProductToCart(productId, products, addToCart)
   }
 
   const handleLogout = () => {

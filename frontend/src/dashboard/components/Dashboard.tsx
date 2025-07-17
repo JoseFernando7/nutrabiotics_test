@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Product } from '../../models/Product'
-import ProductCard from '../homeComponent/ProductCard'
+import { Product } from '../../shared/models/Product'
+import ProductCard from '../../home/components/ProductCard'
+import { getAllProducts } from '../../shared/Services/GetProducts'
 
 const AdminDashboard: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([])
@@ -9,18 +10,12 @@ const AdminDashboard: React.FC = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-      const token = localStorage.getItem('token')
-      fetch('http://localhost:3000/products', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setProducts(data)
-        })
+      getAllProducts()
+        .then((setProducts))
+        .catch((error) => {
+            console.error('Error fetching products:', error)
+            alert('Error al obtener los productos')
+          })
     }, [])
 
   const handleLogout = () => {

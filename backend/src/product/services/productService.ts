@@ -1,6 +1,6 @@
-import { Product } from '../product/models/product'
-import { CreateProductDTO } from '../product/dtos/createProductDto'
-import { ProductResponseDTO } from '../product/dtos/productResponseDto'
+import { Product } from '../models/product'
+import { CreateProductDTO } from '../dtos/createProductDto'
+import { ProductResponseDTO } from '../dtos/productResponseDto'
 
 export const createProduct = async (productData: CreateProductDTO): Promise<ProductResponseDTO> => {
   const product = new Product({

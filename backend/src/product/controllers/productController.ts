@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import * as productService from '../services/productService'
-import { CreateProductDTO } from '../dtos/product/createProductDto'
+import { CreateProductDTO } from '../dtos/createProductDto'
 
 export const createProduct = async (request: Request, response: Response): Promise<void> => {
   try {

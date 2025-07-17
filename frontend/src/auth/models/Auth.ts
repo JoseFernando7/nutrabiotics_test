@@ -10,7 +10,7 @@ export interface LoginResponse {
 export interface RegisterRequest {
   username: string;
   password: string;
-  role: 'admin' | 'cliente'; // Optional, depending on your authentication logic
+  role: 'admin' | 'cliente';
 }
 
 export interface RegisterResponse {

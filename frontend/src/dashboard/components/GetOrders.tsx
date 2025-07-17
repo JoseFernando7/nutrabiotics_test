@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react'
-import { OrderRequest } from '../../models/Order'
+import { OrderRequest } from '../../shared/models/Order'
 import { useNavigate } from 'react-router-dom'
+import { getAllorders } from '../services/GetOrders'
 
 const GetOrders: React.FC = () => {
   const [orders, setOrders] = useState<OrderRequest[]>([])
@@ -8,18 +9,11 @@ const GetOrders: React.FC = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-
-    fetch('http://localhost:3000/orders', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setOrders(data)
+    getAllorders()
+      .then((data) => setOrders(data))
+      .catch((error) => {
+        console.error('Error fetching orders:', error)
+        alert('Error al obtener las órdenes')
       })
   }, [])
 

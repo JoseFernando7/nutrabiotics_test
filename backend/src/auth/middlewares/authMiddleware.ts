@@ -1,8 +1,8 @@
 import { Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 
-import { envConfig } from '../config/env'
-import { AuthRequest } from '../requests/authRequest'
+import { envConfig } from '../../config/env'
+import { AuthRequest } from '../../shared/requests/authRequest'
 
 const JWT_SECRET_KEY = envConfig.JWT_SECRET
 

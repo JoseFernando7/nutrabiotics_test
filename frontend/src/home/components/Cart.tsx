@@ -1,6 +1,9 @@
 import { ReactNode } from 'react'
-import { useCart } from '../../contexts/CarContext'
-import { OrderRequest } from '../../models/Order'
+import { useCart } from '../../shared/hooks/UseCart'
+import { OrderRequest } from '../../shared/models/Order'
+import { confirmOrder } from '../services/ConfirmOrderService'
+import { decodeToken } from '../utils/JwtUtils'
+import { DecodedToken } from '../models/DecodedToken'
 
 const CartComponent: React.FC = (): ReactNode | Promise<ReactNode> => {
   const { cart, clearCart } = useCart()
@@ -13,11 +16,15 @@ const CartComponent: React.FC = (): ReactNode | Promise<ReactNode> => {
     }
 
     // Get the user id from the token
-    const decodedToken = JSON.parse(atob(token.split('.')[1]))
-    const userId = decodedToken.userId
+    const decodedToken: DecodedToken | null = decodeToken(token);
+
+    if (!decodedToken || !decodedToken.userId) {
+      alert('Token inválido o usuario no encontrado')
+      return
+    }
 
     const orderRequest: OrderRequest = {
-      userId: userId,
+      userId: decodedToken.userId,
       items: cart.map((product) => ({
         productId: product.productId,
         productName: product.name,
@@ -26,26 +33,16 @@ const CartComponent: React.FC = (): ReactNode | Promise<ReactNode> => {
       })),
     }
 
-    fetch('http://localhost:3000/orders', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-      body: JSON.stringify(orderRequest),
-    })
-      .then((response) => {
-        if (response.ok) {
-          clearCart()
-          alert('Órden realizada con éxito')
-        } else {
-          alert('Falló al realizar la orden')
-        }
+    confirmOrder(orderRequest)
+      .then(() => {
+        alert('Orden confirmada con éxito')
+        clearCart()
       })
       .catch((error) => {
-        console.error('Error al realizar la orden:', error)
+        console.error('Error al confirmar la orden:', error)
+        alert('Error al confirmar la orden, inténtalo nuevamente.')
       })
-    }
+  }
 
   return (
     <div>

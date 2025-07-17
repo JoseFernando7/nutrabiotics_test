@@ -4,13 +4,13 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 // import './index.css'
 import App from './App.tsx'
-import Signup from './components/authComponent/Signup.tsx'
-import Home from './components/homeComponent/Home.tsx'
-import { CartProvider } from './contexts/CarContext.tsx'
-import CartComponent from './components/homeComponent/Cart.tsx'
-import AdminDashboard from './components/dashboardComponent/Dashboard.tsx'
-import CreateProduct from './components/dashboardComponent/CreateProduct.tsx'
-import GetOrders from './components/dashboardComponent/GetOrders.tsx'
+import Signup from './auth/components/Signup.tsx'
+import Home from './home/components/Home.tsx'
+import { CartProvider } from './shared/hooks/contexts/CartContext.tsx'
+import CartComponent from './home/components/Cart.tsx'
+import AdminDashboard from './dashboard/components/Dashboard.tsx'
+import CreateProduct from './dashboard/components/CreateProduct.tsx'
+import GetOrders from './dashboard/components/GetOrders.tsx'
 
 const router = createBrowserRouter([
   {

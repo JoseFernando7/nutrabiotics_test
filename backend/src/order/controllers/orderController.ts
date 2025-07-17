@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import * as orderService from '../services/orderService'
-import { CreateOrderDTO } from '../dtos/order/createrOrderDto'
-import { AuthRequest } from '../requests/authRequest'
+import { CreateOrderDTO } from '../dtos/createrOrderDto'
+import { AuthRequest } from '../../shared/requests/authRequest'
 
 export const createOrder = async (request: Request, response: Response): Promise<void> => {
   const { user } = request as AuthRequest

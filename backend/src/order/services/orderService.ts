@@ -1,7 +1,7 @@
-import { Order } from '../order/models/order'
-import { CreateOrderDTO } from '../order/dtos/createrOrderDto'
-import { OrderResponseDTO } from '../order/dtos/orderResponseDto'
-import { UserResponseDTO } from '../user/dtos/userResponseDto'
+import { Order } from '../models/order'
+import { CreateOrderDTO } from '../dtos/createrOrderDto'
+import { OrderResponseDTO } from '../dtos/orderResponseDto'
+import { UserResponseDTO } from '../../user/dtos/userResponseDto'
 import { Types } from 'mongoose'
 
 export const createOrder = async (orderData: CreateOrderDTO, user: UserResponseDTO): Promise<OrderResponseDTO> => {
